@@ -1,15 +1,28 @@
 {
   "name": "bun_http_example",
-  "version": "1.0.50",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/main.ts",
+    "build": "bun build --target bun src/main.ts --outdir dist",
+    "typecheck": "bun x tsc --noEmit",
+    "migrate:create": "bun x prisma migrate dev --create-only",
+    "migrate:dev": "bun x prisma migrate dev",
+    "db:generate": "bun x prisma generate"
   },
+  "module": "src/main.js",
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/swagger": "^0.7.3",
+    "elysia": "^0.7.17",
+    "inversify": "^6.0.1",
+    "kysely": "^0.26.3",
+    "pg": "^8.11.3",
+    "pino": "^8.16.0",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+    "@types/pg": "^8.10.5",
+    "bun-types": "^1.0.6",
+    "prisma": "^5.4.2",
+    "prisma-kysely": "^1.7.1",
+    "typescript": "^5.2.2"
+  }
 }
