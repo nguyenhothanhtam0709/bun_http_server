@@ -17,10 +17,11 @@ export class PostController extends AbstractBaseController {
 	}
 
 	public mapRoute(): void {
+		// post /posts
 		this.route.post(
 			'/',
 			async ({ body }) => {
-				const post = await this.postService.createPost(body);
+				const post = await this.postService.createPost(body as any);
 				return post;
 			},
 			{
@@ -28,7 +29,59 @@ export class PostController extends AbstractBaseController {
 					title: t.String({
 						maxLength: 256,
 					}),
-					content: t.String(),
+					content: t.Optional(t.String()),
+				}),
+			}
+		);
+
+		// get /posts
+		this.route.get('/', () => {
+			return this.postService.getPosts();
+		});
+
+		// get /posts/:id
+		this.route.get(
+			'/:id',
+			({ params: { id } }) => {
+				return this.postService.getPost(id);
+			},
+			{
+				params: t.Object({
+					id: t.Numeric(),
+				}),
+			}
+		);
+
+		// put /posts/:id
+		this.route.put(
+			'/:id',
+			({ params: { id }, body }) => {
+				return this.postService.update(id, body as any);
+			},
+			{
+				params: t.Object({
+					id: t.Numeric(),
+				}),
+				body: t.Object({
+					title: t.Optional(
+						t.String({
+							maxLength: 256,
+						})
+					),
+					content: t.Optional(t.String()),
+				}),
+			}
+		);
+
+		// delete /posts/:id
+		this.route.delete(
+			'/:id',
+			({ params: { id } }) => {
+				return this.postService.delete(id);
+			},
+			{
+				params: t.Object({
+					id: t.Numeric(),
 				}),
 			}
 		);
